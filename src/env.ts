@@ -5,6 +5,7 @@ dotenv.config();
 export const env = {
   port: process.env.PORT || 4000,
   host: process.env.HOST || 'localhost',
+  jwtsecret: process.env.JWT_SECRET || 'secret',
   db: {
     host: process.env.DATABASE_HOST || 'localhost',
     port: process.env.DATABASE_PORT || 27017,
