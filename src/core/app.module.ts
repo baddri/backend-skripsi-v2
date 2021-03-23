@@ -1,7 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+
+import { CompressionMiddleware } from 'middlewares/compression.middleware';
+import { HstsMiddleware } from 'middlewares/hsts.middleware';
+import { SecurityMiddleware } from 'middlewares/security.middleware';
+import { NocacheMiddleware } from 'middlewares/nocache.middleware';
 
 import { UserModule } from 'api/user/user.module';
 import { AppController } from './app.controller';
@@ -28,4 +33,15 @@ import { env } from 'env';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        CompressionMiddleware,
+        HstsMiddleware,
+        SecurityMiddleware,
+        NocacheMiddleware,
+      )
+      .forRoutes('*');
+  }
+}
