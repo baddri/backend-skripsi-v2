@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { APP_GUARD } from '@nestjs/core';
 
 import { CompressionMiddleware } from 'middlewares/compression.middleware';
 import { HstsMiddleware } from 'middlewares/hsts.middleware';
@@ -11,11 +12,14 @@ import { NocacheMiddleware } from 'middlewares/nocache.middleware';
 import { UserModule } from 'api/user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from 'api/auth/auth.module';
 import { env } from 'env';
+import { JwtAuthGuard } from 'api/auth/jwt-auth.guard';
 
 @Module({
   imports: [
     UserModule,
+    AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
       `mongodb://${env.db.host}:${env.db.port}/${env.db.database}`,
@@ -31,7 +35,13 @@ import { env } from 'env';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -13,6 +13,7 @@ import { UserService } from './user.service';
       { name: UserProfile.name, schema: UserProfileSchema },
     ]),
   ],
+  exports: [UserService],
   providers: [UserResolver, UserService],
 })
 export class UserModule {}

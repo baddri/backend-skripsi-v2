@@ -3,12 +3,10 @@ import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
 import { UserNotFound } from 'errors/UserNotFound';
-import { getUserToken } from 'libs/jwt';
 
 import { User, UserDocument } from './schemas/user.schema';
 import { UserProfile, UserProfileDocument } from './schemas/userprofile.schema';
 import { CreateUserArgs } from './args/createuser.args';
-import { WrongPassword } from 'errors/WrongPassword';
 
 @Injectable()
 export class UserService {
@@ -37,16 +35,10 @@ export class UserService {
       .execPopulate();
   }
 
-  public async login(email: string, password: string): Promise<string> {
-    const user = await this.getUser(email);
-    if (!(await User.comparePassword(user, password))) throw WrongPassword;
-    return getUserToken(user);
-  }
-
   public async getUser(email: string): Promise<UserDocument> {
-    const user = this.UserModel.findOne({ email });
+    const user = await this.UserModel.findOne({ email });
     if (!user) throw UserNotFound;
-    return user;
+    return user.populate('user_profile').execPopulate();
   }
 
   public async getAllUsers(): Promise<UserDocument[]> {

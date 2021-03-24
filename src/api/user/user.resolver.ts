@@ -1,35 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Logger } from '@nestjs/common';
 
 import { User } from './types/user.type';
 import { UserService } from './user.service';
 import { UserDocument } from 'api/user/schemas/user.schema';
 import { CreateUserArgs } from './args/createuser.args';
+import { Public } from 'decorators/Public';
+import { CurrentUser } from 'decorators/CurrentUser';
 
 @Resolver(of => User)
 export class UserResolver {
+  private logger = new Logger(UserResolver.name);
+
   constructor(private userService: UserService) {}
 
+  @Public()
   @Query(returns => User)
   public async getUser(@Args('email') email: string): Promise<UserDocument> {
     return await this.userService.getUser(email);
   }
 
-  @Query(returns => String)
-  public async login(
-    @Args('email') email: string,
-    @Args('password') password: string,
-  ): Promise<string> {
-    return await this.userService.login(email, password);
-  }
-
+  @Public()
   @Mutation(returns => User)
   public async createUser(@Args() args: CreateUserArgs): Promise<UserDocument> {
     return await this.userService.createUser(args);
   }
 
-  @Mutation(returns => Boolean)
-  public async example(@Args() args: CreateUserArgs): Promise<boolean> {
-    return true;
+  @Query(returns => User)
+  public async myProfile(@CurrentUser() user: any): Promise<UserDocument> {
+    this.logger.log(user);
+    return this.userService.getUser(user.email);
   }
 }
