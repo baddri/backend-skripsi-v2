@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, ResolveField } from '@nestjs/graphql';
 
 import { UserProfile } from './userprofile.type';
 
