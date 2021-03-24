@@ -14,7 +14,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from 'api/auth/auth.module';
 import { env } from 'env';
-import { JwtAuthGuard } from 'api/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
