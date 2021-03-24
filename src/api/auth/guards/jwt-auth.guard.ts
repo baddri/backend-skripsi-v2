@@ -9,6 +9,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 
 import { IS_PUBLIC_KEY } from 'decorators/Public';
+import { UserIsBanned } from 'errors/UserIsBanned';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -35,6 +36,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user, info) {
     // You can throw an exception based on either "info" or "err" arguments
+    if (user.is_banned) throw new UserIsBanned();
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
