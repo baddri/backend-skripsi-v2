@@ -7,7 +7,7 @@ import { Role } from 'constants/Role';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
   @Prop({ required: true, unique: true })
   public email: string;
@@ -47,6 +47,9 @@ export class User {
 
   @Prop({ default: ['USER'] })
   public roles: Role[];
+
+  @Prop()
+  public stripe_consumer_id?: string;
 
   @Prop({ type: Types.ObjectId, ref: UserProfile.name })
   public user_profile: UserProfile;

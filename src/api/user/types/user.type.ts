@@ -38,11 +38,24 @@ export class User {
   @Field()
   public is_verified: boolean;
 
+  @Field()
+  public course_count: number;
+
+  @Field()
+  public owned_course_count: number;
+
   @Field(type => [String])
   public roles: string[];
 
-  // TODO: add the rest of field
+  @Field({ nullable: true })
+  public stripe_consumer_id?: string;
 
   @Field(type => UserProfile)
   public user_profile: UserProfile;
+
+  @Field()
+  public createdAt: Date;
+
+  @Field()
+  public updatedAt: Date;
 }
