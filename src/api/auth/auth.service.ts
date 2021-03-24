@@ -20,7 +20,7 @@ export class AuthService {
     return this.jwtService.sign({
       email: user.email,
       email_verified: user.email_verified,
-      role: user.role,
+      roles: user.roles,
       is_instructor: user.is_instructor,
       is_banned: user.is_banned,
     });

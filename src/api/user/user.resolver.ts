@@ -8,6 +8,8 @@ import { UserDocument } from 'api/user/schemas/user.schema';
 import { CreateUserArgs } from './args/createuser.args';
 import { Public } from 'decorators/Public';
 import { CurrentUser } from 'decorators/CurrentUser';
+import { Roles } from 'decorators/Roles';
+import { EmailVerified } from 'decorators/EmailVerified';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -15,7 +17,6 @@ export class UserResolver {
 
   constructor(private userService: UserService) {}
 
-  @Public()
   @Query(returns => User)
   public async getUser(@Args('email') email: string): Promise<UserDocument> {
     return await this.userService.getUser(email);
@@ -28,8 +29,9 @@ export class UserResolver {
   }
 
   @Query(returns => User)
-  public async myProfile(@CurrentUser() user: any): Promise<UserDocument> {
-    this.logger.log(user);
-    return this.userService.getUser(user.email);
+  public async myProfile(
+    @CurrentUser('email') email: string,
+  ): Promise<UserDocument> {
+    return this.userService.getUser(email);
   }
 }

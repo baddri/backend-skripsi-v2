@@ -38,6 +38,9 @@ export class User {
   @Field()
   public is_verified: boolean;
 
+  @Field(type => [String])
+  public roles: string[];
+
   // TODO: add the rest of field
 
   @Field(type => UserProfile)

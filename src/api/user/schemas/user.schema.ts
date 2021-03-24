@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { UserProfile } from './userprofile.schema';
-import { Roles } from 'constants/Roles';
+import { Role } from 'constants/Role';
 
 export type UserDocument = User & Document;
 
@@ -45,8 +45,8 @@ export class User {
   @Prop({ required: true })
   public password: string;
 
-  @Prop({ default: 'USER' })
-  public role: Roles;
+  @Prop({ default: ['USER'] })
+  public roles: Role[];
 
   @Prop({ type: Types.ObjectId, ref: UserProfile.name })
   public user_profile: UserProfile;
