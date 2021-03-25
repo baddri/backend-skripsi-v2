@@ -10,15 +10,17 @@ import { SecurityMiddleware } from 'middlewares/security.middleware';
 import { NocacheMiddleware } from 'middlewares/nocache.middleware';
 
 import { UserModule } from 'api/user/user.module';
+import { CourseModule } from 'api/course/course.module';
+import { AuthModule } from 'api/auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from 'api/auth/auth.module';
 import { env } from 'env';
 import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
     UserModule,
+    CourseModule,
     AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(

@@ -38,7 +38,7 @@ export class UserService {
   public async getUser(email: string): Promise<UserDocument> {
     const user = await this.UserModel.findOne({ email });
     if (!user) throw new UserNotFound();
-    return user.populate('user_profile').execPopulate();
+    return await user.populate('user_profile').execPopulate();
   }
 
   public async getAllUsers(): Promise<UserDocument[]> {
