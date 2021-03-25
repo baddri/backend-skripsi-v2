@@ -16,11 +16,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { env } from 'env';
 import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
+import { CollectionModule } from 'api/collection/collection.module';
+import { NotificationModule } from 'api/notification/notification.module';
 
 @Module({
   imports: [
     UserModule,
     CourseModule,
+    CollectionModule,
+    NotificationModule,
     AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
