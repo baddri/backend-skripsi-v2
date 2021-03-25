@@ -5,6 +5,7 @@ import { Favorite, FavoriteSchema } from './schemas/favorite.schema';
 import { History, HistorySchema } from './schemas/history.schema';
 import { Wishlist, WishlistSchema } from './schemas/wishlist.schema';
 import { CollectionService } from './collection.service';
+import { Collection, CollectionSchema } from './schemas/collection.schema';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CollectionService } from './collection.service';
       { name: Favorite.name, schema: FavoriteSchema },
       { name: History.name, schema: HistorySchema },
       { name: Wishlist.name, schema: WishlistSchema },
+      { name: Collection.name, schema: CollectionSchema },
     ]),
   ],
   exports: [CollectionService],
