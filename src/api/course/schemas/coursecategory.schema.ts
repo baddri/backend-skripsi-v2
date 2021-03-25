@@ -12,7 +12,7 @@ export class CourseCategory {
   public description: string;
 
   @Prop()
-  public image_url: string;
+  public icon_url: string;
 }
 
 export const CourseCategorySchema = SchemaFactory.createForClass(

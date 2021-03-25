@@ -18,6 +18,7 @@ import { env } from 'env';
 import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 import { CollectionModule } from 'api/collection/collection.module';
 import { NotificationModule } from 'api/notification/notification.module';
+import { PaymentModule } from 'api/payment/payment.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { NotificationModule } from 'api/notification/notification.module';
     CourseModule,
     CollectionModule,
     NotificationModule,
+    PaymentModule,
     AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(

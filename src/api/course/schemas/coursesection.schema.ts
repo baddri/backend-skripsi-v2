@@ -18,7 +18,7 @@ export class CourseSection {
   public description?: string;
 
   @Prop()
-  public icon_url: string;
+  public icon_url?: string;
 }
 
 export const CourseSectionSchema = SchemaFactory.createForClass(CourseSection);

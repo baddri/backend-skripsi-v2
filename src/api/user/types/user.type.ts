@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ObjectType, Field, ResolveField } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectId } from 'mongoose';
 
 import { UserProfile } from './userprofile.type';
 
 @ObjectType()
 export class User {
+  @Field(type => ID)
+  public _id: ObjectId;
+
   @Field()
   public email: string;
 
