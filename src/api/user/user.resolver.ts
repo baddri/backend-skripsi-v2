@@ -51,4 +51,10 @@ export class UserResolver {
   ): Promise<UserDocument> {
     return await this.userService.updateProfile(email, update);
   }
+
+  @Public()
+  @Query(returns => Boolean)
+  public async availableEmail(@Args('email') email: string): Promise<boolean> {
+    return this.userService.availableEmail(email);
+  }
 }

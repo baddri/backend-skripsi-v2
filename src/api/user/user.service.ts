@@ -58,4 +58,10 @@ export class UserService {
       new: true,
     });
   }
+
+  public async availableEmail(email: string): Promise<boolean> {
+    const res = await this.UserModel.findOne({ email });
+    if (res) return false;
+    return true;
+  }
 }
