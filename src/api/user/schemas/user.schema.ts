@@ -1,15 +1,30 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-import { UserProfile } from './userprofile.schema';
 import { Role } from 'constants/Role';
 
 export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+  // START OF VISIBLE PROFILE
+  @Prop({ required: true })
+  public full_name: string;
+
   @Prop()
+  public avatar_url?: string;
+
+  @Prop()
+  public gender?: 'MALE' | 'FEMALE';
+
+  @Prop()
+  public birth_date?: Date;
+
+  @Prop()
+  public information?: string;
+  // END OF VISIBLE PROFILE
+
   @Prop({ required: true, unique: true })
   public email: string;
 
@@ -51,9 +66,6 @@ export class User {
 
   @Prop()
   public stripe_consumer_id?: string;
-
-  @Prop({ type: Types.ObjectId, ref: UserProfile.name })
-  public user_profile: UserProfile;
 
   public static async comparePassword(
     user: User,

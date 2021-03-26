@@ -10,6 +10,21 @@ export class User {
   public _id: ObjectId;
 
   @Field()
+  public full_name: string;
+
+  @Field({ nullable: true })
+  public avatar_url?: string;
+
+  @Field({ nullable: true })
+  public gender: string;
+
+  @Field({ nullable: true })
+  public birth_date: Date;
+
+  @Field({ nullable: true })
+  public information: string;
+
+  @Field()
   public email: string;
 
   @Field()
@@ -53,9 +68,6 @@ export class User {
 
   @Field({ nullable: true })
   public stripe_consumer_id?: string;
-
-  @Field(type => UserProfile)
-  public user_profile: UserProfile;
 
   @Field()
   public createdAt: Date;

@@ -2,15 +2,15 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 
-import { User } from 'api/user/types/user.type';
+import { UserProfile } from 'api/user/types/userprofile.type';
 
 @ObjectType()
 export class CourseReview {
   @Field(type => ID)
   public _id: ObjectId;
 
-  @Field(type => User)
-  public owner: User;
+  @Field(type => UserProfile)
+  public owner: UserProfile;
 
   @Field()
   public score: number;

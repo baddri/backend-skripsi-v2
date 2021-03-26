@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
-import { User } from 'api/user/types/user.type';
+import { UserProfile } from 'api/user/types/userprofile.type';
 import { ObjectId } from 'mongoose';
 
 @ObjectType()
 export class CourseChat {
-  @Field(type => User)
-  public owner: User;
+  @Field(type => UserProfile)
+  public owner: UserProfile;
 
   @Field(type => TaggedChat, { nullable: true })
   public tagged_chat?: TaggedChat;
