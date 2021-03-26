@@ -1,4 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  ValidationPipe,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -19,7 +24,6 @@ import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 import { CollectionModule } from 'api/collection/collection.module';
 import { NotificationModule } from 'api/notification/notification.module';
 import { PaymentModule } from 'api/payment/payment.module';
-import { ValidationPipe } from 'pipes/validation.pipe';
 
 @Module({
   imports: [
