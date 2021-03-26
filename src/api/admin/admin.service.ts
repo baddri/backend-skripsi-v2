@@ -6,6 +6,7 @@ import { Connection, Model } from 'mongoose';
 import { UserNotFound } from 'errors/UserNotFound';
 
 import { User, UserDocument } from 'api/user/schemas/user.schema';
+import { Pagination } from 'api/common/args/pagination.args';
 
 @Injectable()
 export class AdminService {
@@ -28,7 +29,10 @@ export class AdminService {
     return user;
   }
 
-  public async getAllUsers(): Promise<UserDocument[]> {
-    return this.UserModel.find();
+  public async getAllUsers({
+    limit,
+    offset,
+  }: Pagination): Promise<UserDocument[]> {
+    return this.UserModel.find().limit(limit).skip(offset);
   }
 }

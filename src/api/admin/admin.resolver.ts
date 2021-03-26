@@ -8,6 +8,7 @@ import { UserService } from 'api/user/user.service';
 import { User } from 'api/user/types/user.type';
 import { UserDocument } from 'api/user/schemas/user.schema';
 import { AdminService } from './admin.service';
+import { Pagination } from 'api/common/args/pagination.args';
 
 @Roles('ADMIN', 'DEVELOPER')
 @Resolver()
@@ -26,5 +27,12 @@ export class AdminResolver {
   @Query(returns => User)
   public async getUser(@Args('id') id: string): Promise<UserDocument> {
     return await this.adminService.getUser(id);
+  }
+
+  @Query(returns => [User])
+  public async getAllUsers(
+    @Args() pagination: Pagination,
+  ): Promise<UserDocument[]> {
+    return this.adminService.getAllUsers(pagination);
   }
 }
