@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 
 import { CompressionMiddleware } from 'middlewares/compression.middleware';
 import { HstsMiddleware } from 'middlewares/hsts.middleware';
@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 import { CollectionModule } from 'api/collection/collection.module';
 import { NotificationModule } from 'api/notification/notification.module';
 import { PaymentModule } from 'api/payment/payment.module';
+import { ValidationPipe } from 'pipes/validation.pipe';
 
 @Module({
   imports: [
@@ -48,6 +49,10 @@ import { PaymentModule } from 'api/payment/payment.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
     },
   ],
 })
