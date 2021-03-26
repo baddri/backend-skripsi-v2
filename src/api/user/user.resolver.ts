@@ -11,6 +11,7 @@ import { CurrentUser } from 'decorators/CurrentUser';
 import { Roles } from 'decorators/Roles';
 import { EmailVerified } from 'decorators/EmailVerified';
 import { ChangePasswordArgs } from './args/changepassword.args';
+import { UpdateProfileArgs } from './args/updateprofile.args';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -41,5 +42,13 @@ export class UserResolver {
       args.oldPassword,
       args.newPassword,
     );
+  }
+
+  @Mutation(returns => User)
+  public async updateProfile(
+    @Args() update: UpdateProfileArgs,
+    @CurrentUser('email') email: string,
+  ): Promise<UserDocument> {
+    return await this.userService.updateProfile(email, update);
   }
 }

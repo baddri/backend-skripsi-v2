@@ -41,6 +41,7 @@ import { AdminModule } from 'api/admin/admin.module';
       {
         user: env.db.username,
         pass: env.db.password,
+        useFindAndModify: false,
       },
     ),
     GraphQLModule.forRoot({

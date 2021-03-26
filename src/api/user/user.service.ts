@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
+import { Model, Connection, UpdateQuery } from 'mongoose';
 
 import { UserNotFound } from 'errors/UserNotFound';
 
@@ -46,5 +46,16 @@ export class UserService {
       { password: await User.encriptPassword(newPassword) },
     );
     return true;
+  }
+
+  public async updateProfile(
+    email: string,
+    update: UpdateQuery<UserDocument>,
+  ): Promise<UserDocument> {
+    const user = await this.getUserWithEmail(email);
+    if (!user) throw new UserNotFound();
+    return await this.UserModel.findOneAndUpdate({ email }, update, {
+      new: true,
+    });
   }
 }
