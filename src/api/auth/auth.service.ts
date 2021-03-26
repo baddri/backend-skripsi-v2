@@ -15,7 +15,7 @@ export class AuthService {
 
   @Public()
   public async login(email: string, password: string): Promise<string> {
-    const user = await this.userService.getUser(email);
+    const user = await this.userService.getUserWithEmail(email);
     if (!(await User.comparePassword(user, password))) throw WrongPassword;
     return this.jwtService.sign({
       email: user.email,
