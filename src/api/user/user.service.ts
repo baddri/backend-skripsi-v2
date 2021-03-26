@@ -6,6 +6,7 @@ import { UserNotFound } from 'errors/UserNotFound';
 
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserArgs } from './args/createuser.args';
+import { WrongPassword } from 'errors/WrongPassword';
 
 @Injectable()
 export class UserService {
@@ -32,13 +33,18 @@ export class UserService {
     return user;
   }
 
-  public async getUser(id: string): Promise<UserDocument> {
-    const user = await this.UserModel.findById(id);
+  public async changePassword(
+    email: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<boolean> {
+    const user = await this.getUserWithEmail(email);
     if (!user) throw new UserNotFound();
-    return user;
-  }
-
-  public async getAllUsers(): Promise<UserDocument[]> {
-    return this.UserModel.find();
+    if (!User.comparePassword(user, oldPassword)) throw new WrongPassword();
+    await this.UserModel.updateOne(
+      { email },
+      { password: await User.encriptPassword(newPassword) },
+    );
+    return true;
   }
 }

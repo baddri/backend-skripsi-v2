@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { Role } from 'constants/Role';
+import { Gender } from 'constants/Gender';
 
 export type UserDocument = User & Document;
 
@@ -16,7 +17,7 @@ export class User {
   public avatar_url?: string;
 
   @Prop()
-  public gender?: 'MALE' | 'FEMALE';
+  public gender?: Gender;
 
   @Prop()
   public birth_date?: Date;

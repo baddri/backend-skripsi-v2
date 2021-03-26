@@ -10,6 +10,7 @@ import { Public } from 'decorators/Public';
 import { CurrentUser } from 'decorators/CurrentUser';
 import { Roles } from 'decorators/Roles';
 import { EmailVerified } from 'decorators/EmailVerified';
+import { ChangePasswordArgs } from './args/changepassword.args';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -27,6 +28,18 @@ export class UserResolver {
   public async myProfile(
     @CurrentUser('email') email: string,
   ): Promise<UserDocument> {
-    return this.userService.getUser(email);
+    return this.userService.getUserWithEmail(email);
+  }
+
+  @Mutation(returns => Boolean)
+  public async changePassword(
+    @Args() args: ChangePasswordArgs,
+    @CurrentUser('email') email: string,
+  ): Promise<boolean> {
+    return this.userService.changePassword(
+      email,
+      args.oldPassword,
+      args.newPassword,
+    );
   }
 }

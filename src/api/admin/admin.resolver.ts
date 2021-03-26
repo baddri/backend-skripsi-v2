@@ -7,23 +7,24 @@ import { Roles } from 'decorators/Roles';
 import { UserService } from 'api/user/user.service';
 import { User } from 'api/user/types/user.type';
 import { UserDocument } from 'api/user/schemas/user.schema';
+import { AdminService } from './admin.service';
 
 @Roles('ADMIN', 'DEVELOPER')
 @Resolver()
 export class AdminResolver {
   private logger = new Logger(AdminResolver.name);
 
-  constructor(private userService: UserService) {}
+  constructor(private adminService: AdminService) {}
 
   @Query(returns => User)
   public async getUserWithEmail(
     @Args('email') email: string,
   ): Promise<UserDocument> {
-    return await this.userService.getUserWithEmail(email);
+    return await this.adminService.getUserWithEmail(email);
   }
 
   @Query(returns => User)
   public async getUser(@Args('id') id: string): Promise<UserDocument> {
-    return await this.userService.getUser(id);
+    return await this.adminService.getUser(id);
   }
 }

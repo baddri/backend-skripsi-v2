@@ -2,6 +2,6 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class WrongPassword extends HttpException {
   constructor() {
-    super('WrongPassword', HttpStatus.BAD_REQUEST);
+    super('Wrong Password!', HttpStatus.BAD_REQUEST);
   }
 }
