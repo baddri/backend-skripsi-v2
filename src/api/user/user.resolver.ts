@@ -17,11 +17,6 @@ export class UserResolver {
 
   constructor(private userService: UserService) {}
 
-  @Query(returns => User)
-  public async getUser(@Args('email') email: string): Promise<UserDocument> {
-    return await this.userService.getUser(email);
-  }
-
   @Public()
   @Mutation(returns => User)
   public async createUser(@Args() args: CreateUserArgs): Promise<UserDocument> {

@@ -26,8 +26,14 @@ export class UserService {
     ).save();
   }
 
-  public async getUser(email: string): Promise<UserDocument> {
+  public async getUserWithEmail(email: string): Promise<UserDocument> {
     const user = await this.UserModel.findOne({ email });
+    if (!user) throw new UserNotFound();
+    return user;
+  }
+
+  public async getUser(id: string): Promise<UserDocument> {
+    const user = await this.UserModel.findById(id);
     if (!user) throw new UserNotFound();
     return user;
   }

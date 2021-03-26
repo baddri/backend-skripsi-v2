@@ -24,6 +24,7 @@ import { JwtAuthGuard } from 'api/auth/guards/jwt-auth.guard';
 import { CollectionModule } from 'api/collection/collection.module';
 import { NotificationModule } from 'api/notification/notification.module';
 import { PaymentModule } from 'api/payment/payment.module';
+import { AdminModule } from 'api/admin/admin.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PaymentModule } from 'api/payment/payment.module';
     CollectionModule,
     NotificationModule,
     PaymentModule,
+    AdminModule,
     AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
