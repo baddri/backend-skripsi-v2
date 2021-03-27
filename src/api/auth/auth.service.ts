@@ -19,6 +19,7 @@ export class AuthService {
     if (!(await User.comparePassword(user, password)))
       throw new WrongPassword();
     return this.jwtService.sign({
+      id: user._id,
       email: user.email,
       email_verified: user.email_verified,
       roles: user.roles,
