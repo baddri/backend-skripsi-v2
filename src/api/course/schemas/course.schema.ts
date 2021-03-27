@@ -41,7 +41,7 @@ export class Course {
   @Prop()
   public published_at?: Date;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ unique: true, type: String, slug: 'title' })
   public slug: string;
 
   @Prop()

@@ -5,6 +5,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
@@ -42,6 +43,11 @@ import { AdminModule } from 'api/admin/admin.module';
         user: env.db.username,
         pass: env.db.password,
         useFindAndModify: false,
+        connectionFactory: (connection: Connection) => {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          connection.plugin(require('mongoose-slug-generator'));
+          return connection;
+        },
       },
     ),
     GraphQLModule.forRoot({

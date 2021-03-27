@@ -24,6 +24,7 @@ import {
   CourseSection,
   CourseSectionSchema,
 } from './schemas/coursesection.schema';
+import { CourseResolver } from './course.resolver';
 
 @Module({
   imports: [
@@ -38,6 +39,6 @@ import {
     ]),
   ],
   exports: [CourseService],
-  providers: [CourseService],
+  providers: [CourseService, CourseResolver],
 })
 export class CourseModule {}

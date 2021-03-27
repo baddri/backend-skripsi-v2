@@ -2,6 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 
+import { DocumentNotFound } from 'errors/DocumentNotFound';
+import { Query } from 'utils/Query';
+import { coursepopulate } from './query/coursepopulate.query';
+import { CreateCourseArgs } from './args/createcourse.args';
+
 import { Course, CourseDocument } from './schemas/course.schema';
 import {
   CourseCategory,
@@ -45,4 +50,28 @@ export class CourseService {
     @InjectModel(CourseSection.name)
     private CourseSectionModel: Model<CourseSectionDocument>,
   ) {}
+
+  public async getCourse(id: string) {
+    const res = await this.CourseModel.aggregate(
+      new Query([
+        {
+          $match: {
+            _id: id,
+          },
+        },
+      ]).chain(coursepopulate).query,
+    );
+    if (!res) throw new DocumentNotFound();
+    return res[0];
+  }
+
+  public async createCourse(userId: string, args: CreateCourseArgs) {
+    const course = await (
+      await this.CourseModel.create({
+        ...args,
+        owner: userId,
+      })
+    ).save();
+    return await this.getCourse(course._id);
+  }
 }

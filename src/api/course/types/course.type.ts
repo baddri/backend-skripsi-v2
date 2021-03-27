@@ -75,6 +75,9 @@ export class Course {
   public favorite_count: number;
 
   @Field()
+  public student_count: number;
+
+  @Field()
   public is_completed: boolean;
 
   @Field()
