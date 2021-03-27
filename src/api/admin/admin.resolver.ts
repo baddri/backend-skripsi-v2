@@ -31,6 +31,7 @@ export class AdminResolver {
 
   @Query(returns => [User])
   public async getAllUsers(
+    // TODO: add keyword and sort args
     @Args() pagination: Pagination,
   ): Promise<UserDocument[]> {
     return this.adminService.getAllUsers(pagination);

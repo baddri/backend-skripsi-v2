@@ -8,6 +8,9 @@ import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserArgs } from './args/createuser.args';
 import { WrongPassword } from 'errors/WrongPassword';
 
+import { populateUser } from 'api/common/query/populateuser';
+import { Query } from 'utils/Query';
+
 @Injectable()
 export class UserService {
   private logger = new Logger(UserService.name);
@@ -17,20 +20,35 @@ export class UserService {
     @InjectConnection() private connection: Connection,
   ) {}
 
-  public async createUser(args: CreateUserArgs): Promise<UserDocument> {
-    return (
+  public async createUser(args: CreateUserArgs): Promise<any> {
+    const user = await (
       await this.UserModel.create({
         email: args.email,
         password: await User.encriptPassword(args.password),
         full_name: args.full_name,
       })
     ).save();
+    return await this.getUserDataWithEmail(user.email);
   }
 
   public async getUserWithEmail(email: string): Promise<UserDocument> {
     const user = await this.UserModel.findOne({ email });
     if (!user) throw new UserNotFound();
     return user;
+  }
+
+  public async getUserDataWithEmail(email: string): Promise<any> {
+    const user = await this.UserModel.aggregate(
+      new Query([
+        {
+          $match: {
+            email,
+          },
+        },
+      ]).chain(populateUser).query,
+    );
+    if (!user) throw new UserNotFound();
+    return user[0];
   }
 
   public async changePassword(
@@ -54,9 +72,8 @@ export class UserService {
   ): Promise<UserDocument> {
     const user = await this.getUserWithEmail(email);
     if (!user) throw new UserNotFound();
-    return await this.UserModel.findOneAndUpdate({ email }, update, {
-      new: true,
-    });
+    await this.UserModel.updateOne({ email }, update);
+    return await this.getUserDataWithEmail(email);
   }
 
   public async availableEmail(email: string): Promise<boolean> {

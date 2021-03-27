@@ -29,7 +29,7 @@ export class UserResolver {
   public async myProfile(
     @CurrentUser('email') email: string,
   ): Promise<UserDocument> {
-    return this.userService.getUserWithEmail(email);
+    return this.userService.getUserDataWithEmail(email);
   }
 
   @Mutation(returns => Boolean)
