@@ -41,6 +41,7 @@
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.4",
     "helmet": "^4.4.1",
+    "husky": "^5.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.1",
     "mongoose-slug-generator": "^1.0.4",
