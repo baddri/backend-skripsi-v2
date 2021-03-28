@@ -24,4 +24,7 @@ export class Instructor {
 
   @Field()
   public course_count: number;
+
+  @Field()
+  public student_count: number;
 }
