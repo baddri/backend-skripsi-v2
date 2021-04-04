@@ -10,6 +10,7 @@ import { WrongPassword } from 'errors/WrongPassword';
 
 import { populateUser } from 'api/common/query/populateuser';
 import { Query } from 'utils/Query';
+import { EmailIsUsed } from 'errors/EmailIsUsed';
 
 @Injectable()
 export class UserService {
@@ -21,14 +22,18 @@ export class UserService {
   ) {}
 
   public async createUser(args: CreateUserArgs): Promise<any> {
-    const user = await (
-      await this.UserModel.create({
-        email: args.email,
-        password: await User.encriptPassword(args.password),
-        full_name: args.full_name,
-      })
-    ).save();
-    return await this.getUserDataWithEmail(user.email);
+    try {
+      const user = await (
+        await this.UserModel.create({
+          email: args.email,
+          password: await User.encriptPassword(args.password),
+          full_name: args.full_name,
+        })
+      ).save();
+      return await this.getUserDataWithEmail(user.email);
+    } catch {
+      throw new EmailIsUsed();
+    }
   }
 
   public async getUserWithEmail(email: string): Promise<UserDocument> {
