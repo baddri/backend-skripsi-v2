@@ -21,7 +21,14 @@ export const courseQuery = new Query([
         ...[
           {
             $match: {
-              _id: '$$instructor_id',
+              $expr: {
+                $eq: [
+                  '$$instructor_id',
+                  {
+                    $toString: '$_id',
+                  },
+                ],
+              },
             },
           },
         ],

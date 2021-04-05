@@ -68,7 +68,8 @@ export class CourseService {
         },
       ]).chain(courseQuery).query,
     );
-    if (!res) throw new DocumentNotFound();
+    if (res.length === 0) throw new DocumentNotFound();
+    this.logger.log(res[0]);
     return res[0];
   }
 
