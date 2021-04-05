@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserProfile } from 'api/user/types/userprofile.type';
+import { Student } from 'api/user/types/student.type';
 import { ObjectId } from 'mongoose';
 
 @ObjectType()
@@ -8,8 +8,8 @@ export class CourseLessonComment {
   @Field(type => ID)
   public _id: ObjectId;
 
-  @Field(type => UserProfile)
-  public owner: UserProfile;
+  @Field(type => Student)
+  public owner: Student;
 
   @Field(type => TaggedComment, { nullable: true })
   public tagged_comment?: TaggedComment;

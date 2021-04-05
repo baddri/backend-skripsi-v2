@@ -13,6 +13,7 @@ import { Query } from 'utils/Query';
 import { EmailIsUsed } from 'errors/EmailIsUsed';
 import { populateInstructor } from './query/populateinstructor';
 import { DocumentNotFound } from 'errors/DocumentNotFound';
+import { populateStudent } from './query/populatestudent';
 
 @Injectable()
 export class UserService {
@@ -105,6 +106,27 @@ export class UserService {
           },
         },
       ]).chain(populateInstructor).query,
+    );
+    if (res.length === 0) throw new DocumentNotFound();
+    return res[0];
+  }
+
+  public async getStudent(id: string): Promise<any> {
+    const res = await this.UserModel.aggregate(
+      new Query([
+        {
+          $match: {
+            $expr: {
+              $eq: [
+                '$_id',
+                {
+                  $toObjectId: id,
+                },
+              ],
+            },
+          },
+        },
+      ]).chain(populateStudent).query,
     );
     if (res.length === 0) throw new DocumentNotFound();
     return res[0];

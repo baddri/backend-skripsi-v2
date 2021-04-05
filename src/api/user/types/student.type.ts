@@ -3,11 +3,11 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 
 @ObjectType()
-export class UserProfile {
+export class Student {
   @Field(type => ID)
   public _id: ObjectId;
 
-  @Field()
+  @Field({ nullable: true })
   public full_name: string;
 
   @Field({ nullable: true })

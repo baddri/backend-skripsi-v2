@@ -2,8 +2,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 
-import { UserProfile } from './userprofile.type';
-
 @ObjectType()
 export class User {
   @Field(type => ID)

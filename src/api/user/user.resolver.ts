@@ -13,6 +13,7 @@ import { EmailVerified } from 'decorators/EmailVerified';
 import { ChangePasswordArgs } from './args/changepassword.args';
 import { UpdateProfileArgs } from './args/updateprofile.args';
 import { Instructor } from './types/instructor.type';
+import { Student } from './types/student.type';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -63,5 +64,11 @@ export class UserResolver {
   @Query(returns => Instructor)
   public async getInstructor(@Args('id') id: string) {
     return await this.userService.getInstructor(id);
+  }
+
+  @Public()
+  @Query(returns => Student)
+  public async getStudent(@Args('id') id: string) {
+    return await this.userService.getStudent(id);
   }
 }
