@@ -11,6 +11,8 @@ import { WrongPassword } from 'errors/WrongPassword';
 import { populateUser } from 'api/common/query/populateuser';
 import { Query } from 'utils/Query';
 import { EmailIsUsed } from 'errors/EmailIsUsed';
+import { populateInstructor } from './query/populateinstructor';
+import { DocumentNotFound } from 'errors/DocumentNotFound';
 
 @Injectable()
 export class UserService {
@@ -52,7 +54,7 @@ export class UserService {
         },
       ]).chain(populateUser).query,
     );
-    if (!user) throw new UserNotFound();
+    if (user.length === 0) throw new UserNotFound();
     return user[0];
   }
 
@@ -85,5 +87,26 @@ export class UserService {
     const res = await this.UserModel.findOne({ email });
     if (res) return false;
     return true;
+  }
+
+  public async getInstructor(id: string): Promise<any> {
+    const res = await this.UserModel.aggregate(
+      new Query([
+        {
+          $match: {
+            $expr: {
+              $eq: [
+                '$_id',
+                {
+                  $toObjectId: id,
+                },
+              ],
+            },
+          },
+        },
+      ]).chain(populateInstructor).query,
+    );
+    if (res.length === 0) throw new DocumentNotFound();
+    return res[0];
   }
 }

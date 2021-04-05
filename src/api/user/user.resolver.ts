@@ -12,6 +12,7 @@ import { Roles } from 'decorators/Roles';
 import { EmailVerified } from 'decorators/EmailVerified';
 import { ChangePasswordArgs } from './args/changepassword.args';
 import { UpdateProfileArgs } from './args/updateprofile.args';
+import { Instructor } from './types/instructor.type';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -56,5 +57,11 @@ export class UserResolver {
   @Query(returns => Boolean)
   public async availableEmail(@Args('email') email: string): Promise<boolean> {
     return this.userService.availableEmail(email);
+  }
+
+  @Public()
+  @Query(returns => Instructor)
+  public async getInstructor(@Args('id') id: string) {
+    return await this.userService.getInstructor(id);
   }
 }
