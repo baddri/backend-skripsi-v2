@@ -4,7 +4,7 @@ import { Model, Connection } from 'mongoose';
 
 import { DocumentNotFound } from 'errors/DocumentNotFound';
 import { Query } from 'utils/Query';
-import { coursepopulate } from './query/coursepopulate.query';
+import { courseQuery } from './query/course.query';
 import { CreateCourseArgs } from './args/createcourse.args';
 
 import { Course, CourseDocument } from './schemas/course.schema';
@@ -59,7 +59,7 @@ export class CourseService {
             _id: id,
           },
         },
-      ]).chain(coursepopulate).query,
+      ]).chain(courseQuery).query,
     );
     if (!res) throw new DocumentNotFound();
     return res[0];

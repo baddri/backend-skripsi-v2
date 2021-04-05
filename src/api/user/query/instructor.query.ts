@@ -1,6 +1,6 @@
 import { Query } from 'utils/Query';
 
-export const populateInstructor = new Query([
+export const instructorQuery = new Query([
   {
     $match: {
       is_instructor: true,

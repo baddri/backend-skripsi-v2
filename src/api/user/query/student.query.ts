@@ -1,6 +1,6 @@
 import { Query } from 'utils/Query';
 
-export const populateStudent = new Query([
+export const studentQuery = new Query([
   {
     $project: {
       _id: 1,

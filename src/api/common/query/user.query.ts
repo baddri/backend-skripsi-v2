@@ -1,6 +1,6 @@
 import { Query } from 'utils/Query';
 
-export const populateUser = new Query([
+export const userQuery = new Query([
   {
     $lookup: {
       from: 'collections',

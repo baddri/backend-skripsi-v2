@@ -8,12 +8,12 @@ import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserArgs } from './args/createuser.args';
 import { WrongPassword } from 'errors/WrongPassword';
 
-import { populateUser } from 'api/common/query/populateuser';
+import { userQuery } from 'api/common/query/user.query';
 import { Query } from 'utils/Query';
 import { EmailIsUsed } from 'errors/EmailIsUsed';
-import { populateInstructor } from './query/populateinstructor';
+import { instructorQuery } from './query/instructor.query';
 import { DocumentNotFound } from 'errors/DocumentNotFound';
-import { populateStudent } from './query/populatestudent';
+import { studentQuery } from './query/student.query';
 
 @Injectable()
 export class UserService {
@@ -53,7 +53,7 @@ export class UserService {
             email,
           },
         },
-      ]).chain(populateUser).query,
+      ]).chain(userQuery).query,
     );
     if (user.length === 0) throw new UserNotFound();
     return user[0];
@@ -105,7 +105,7 @@ export class UserService {
             },
           },
         },
-      ]).chain(populateInstructor).query,
+      ]).chain(instructorQuery).query,
     );
     if (res.length === 0) throw new DocumentNotFound();
     return res[0];
@@ -126,7 +126,7 @@ export class UserService {
             },
           },
         },
-      ]).chain(populateStudent).query,
+      ]).chain(studentQuery).query,
     );
     if (res.length === 0) throw new DocumentNotFound();
     return res[0];
