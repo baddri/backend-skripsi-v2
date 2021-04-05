@@ -9,6 +9,8 @@ import { User } from 'api/user/types/user.type';
 import { UserDocument } from 'api/user/schemas/user.schema';
 import { AdminService } from './admin.service';
 import { Pagination } from 'api/common/args/pagination.args';
+import { CourseCategory } from 'api/course/types/coursecategory.type';
+import { CreateCategoryArgs } from './args/createcategory.args';
 
 @Roles('ADMIN', 'DEVELOPER')
 @Resolver()
@@ -35,5 +37,10 @@ export class AdminResolver {
     @Args() pagination: Pagination,
   ): Promise<UserDocument[]> {
     return this.adminService.getAllUsers(pagination);
+  }
+
+  @Query(returns => CourseCategory)
+  public async createCourseCategory(@Args() args: CreateCategoryArgs) {
+    return await this.adminService.createCourseCategory(args);
   }
 }

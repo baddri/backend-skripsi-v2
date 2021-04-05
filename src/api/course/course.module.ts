@@ -38,7 +38,12 @@ import { CourseResolver } from './course.resolver';
       { name: CourseSection.name, schema: CourseSectionSchema },
     ]),
   ],
-  exports: [CourseService],
+  exports: [
+    CourseService,
+    MongooseModule.forFeature([
+      { name: CourseCategory.name, schema: CourseCategorySchema },
+    ]),
+  ],
   providers: [CourseService, CourseResolver],
 })
 export class CourseModule {}

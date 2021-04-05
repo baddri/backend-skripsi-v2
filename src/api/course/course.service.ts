@@ -56,7 +56,14 @@ export class CourseService {
       new Query([
         {
           $match: {
-            _id: id,
+            $expr: {
+              $eq: [
+                '$_id',
+                {
+                  $toObjectId: id,
+                },
+              ],
+            },
           },
         },
       ]).chain(courseQuery).query,

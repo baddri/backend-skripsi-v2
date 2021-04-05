@@ -5,7 +5,7 @@ export type CourseCategoryDocument = CourseCategory & Document;
 
 @Schema({ timestamps: true })
 export class CourseCategory {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   public title: string;
 
   @Prop()

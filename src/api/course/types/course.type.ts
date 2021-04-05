@@ -3,7 +3,7 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 
 import { CourseCategory } from './coursecategory.type';
-import { User } from 'api/user/types/user.type';
+import { Instructor } from 'api/user/types/instructor.type';
 import { CourseSection } from './coursesection.type';
 
 @ObjectType()
@@ -26,8 +26,8 @@ export class Course {
   @Field(type => [CourseCategory], { nullable: true })
   public categories?: CourseCategory[];
 
-  @Field(type => User)
-  public owner: User;
+  @Field(type => Instructor)
+  public owner: Instructor;
 
   @Field()
   public is_free: boolean;
