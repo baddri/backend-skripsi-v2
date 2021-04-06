@@ -2,7 +2,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 
-import { User } from 'api/user/schemas/user.schema';
+import { LessonType } from '../lessontype.enum';
 
 @ObjectType()
 export class CourseLesson {
@@ -12,8 +12,8 @@ export class CourseLesson {
   @Field()
   public title: string;
 
-  @Field(type => String)
-  public type: 'VIDEO' | 'TEXT';
+  @Field(type => LessonType)
+  public type: LessonType;
 
   @Field({ nullable: true })
   public lesson_video_url?: string;
@@ -31,7 +31,10 @@ export class CourseLesson {
   public download_url?: string;
 
   @Field()
-  public is_viewed: boolean;
+  public completed: boolean;
+
+  @Field()
+  public progress: number;
 
   @Field()
   public createdAt: Date;

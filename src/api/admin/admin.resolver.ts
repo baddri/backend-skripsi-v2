@@ -39,7 +39,7 @@ export class AdminResolver {
     return this.adminService.getAllUsers(pagination);
   }
 
-  @Query(returns => CourseCategory)
+  @Mutation(returns => CourseCategory)
   public async createCourseCategory(@Args() args: CreateCategoryArgs) {
     return await this.adminService.createCourseCategory(args);
   }

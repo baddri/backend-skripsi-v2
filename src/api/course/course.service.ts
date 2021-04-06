@@ -6,6 +6,7 @@ import { DocumentNotFound } from 'errors/DocumentNotFound';
 import { Query } from 'utils/Query';
 import { courseQuery } from './query/course.query';
 import { CreateCourseArgs } from './args/createcourse.args';
+import { CreateLessonArgs } from './args/createlesson.args';
 
 import { Course, CourseDocument } from './schemas/course.schema';
 import {
@@ -29,6 +30,8 @@ import {
   CourseSection,
   CourseSectionDocument,
 } from './schemas/coursesection.schema';
+import { CreateCourseSectionArgs } from './args/createcoursesection.args';
+import { lessonQuery } from './query/lesson.query';
 
 @Injectable()
 export class CourseService {
@@ -69,7 +72,6 @@ export class CourseService {
       ]).chain(courseQuery).query,
     );
     if (res.length === 0) throw new DocumentNotFound();
-    this.logger.log(res[0]);
     return res[0];
   }
 
@@ -81,5 +83,37 @@ export class CourseService {
       })
     ).save();
     return await this.getCourse(course._id);
+  }
+
+  public async createCourseSection(
+    args: CreateCourseSectionArgs,
+    userId: string,
+  ) {
+    // TODO: check if course with given id is available
+    return await this.CourseSectionModel.create({
+      ...args,
+      owner: userId,
+    });
+    // TODO: resolve query
+    // const sec = await this.CourseSectionModel.aggregate()
+  }
+
+  public async createLesson(args: CreateLessonArgs, userId: string) {
+    // TODO: check availability of given section
+    const lesson = await this.CourseLessonModel.create({
+      ...args,
+      owner: userId,
+    });
+    const res = await this.CourseLessonModel.aggregate(
+      new Query([
+        {
+          $match: {
+            _id: lesson._id,
+          },
+        },
+      ]).chain(lessonQuery(userId)).query,
+    );
+    this.logger.log(res[0]);
+    return res[0];
   }
 }

@@ -3,6 +3,7 @@ import { Query } from 'utils/Query';
 
 export const courseQuery = new Query([
   {
+    // FIXME: categories is string
     $lookup: {
       from: 'coursecategories',
       localField: 'categories',
@@ -34,6 +35,13 @@ export const courseQuery = new Query([
         ],
         ...instructorQuery.query,
       ],
+    },
+  },
+  {
+    $addFields: {
+      owner: {
+        $arrayElemAt: ['$owner', 0],
+      },
     },
   },
 ]);
