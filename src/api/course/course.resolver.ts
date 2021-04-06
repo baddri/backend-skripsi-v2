@@ -34,6 +34,15 @@ export class CourseResolver {
     return await this.courseService.createCourseSection(args, id);
   }
 
+  @Public()
+  @Query(returns => CourseSection)
+  public async getCourseSection(
+    @Args('id') id: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return await this.courseService.getCourseSection(id, userId);
+  }
+
   @Mutation(returns => CourseLesson)
   public async createLesson(
     @Args() args: CreateLessonArgs,
@@ -44,7 +53,10 @@ export class CourseResolver {
 
   @Public()
   @Query(returns => Course)
-  public async getCourse(@Args('id') id: string) {
-    return await this.courseService.getCourse(id);
+  public async getCourse(
+    @Args('id') id: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return await this.courseService.getCourse(id, userId);
   }
 }

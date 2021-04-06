@@ -32,6 +32,7 @@ import {
 } from './schemas/coursesection.schema';
 import { CreateCourseSectionArgs } from './args/createcoursesection.args';
 import { lessonQuery } from './query/lesson.query';
+import { sectionQuery } from './query/section.query';
 
 @Injectable()
 export class CourseService {
@@ -54,7 +55,7 @@ export class CourseService {
     private CourseSectionModel: Model<CourseSectionDocument>,
   ) {}
 
-  public async getCourse(id: string) {
+  public async getCourse(id: string, userId: string) {
     const res = await this.CourseModel.aggregate(
       new Query([
         {
@@ -69,9 +70,10 @@ export class CourseService {
             },
           },
         },
-      ]).chain(courseQuery).query,
+      ]).chain(courseQuery(userId)).query,
     );
     if (res.length === 0) throw new DocumentNotFound();
+    this.logger.log(res[0]);
     return res[0];
   }
 
@@ -82,7 +84,29 @@ export class CourseService {
         owner: userId,
       })
     ).save();
-    return await this.getCourse(course._id);
+    return await this.getCourse(course._id, userId);
+  }
+
+  public async getCourseSection(id: string, userId: string) {
+    const res = await this.CourseSectionModel.aggregate(
+      new Query([
+        {
+          $match: {
+            $expr: {
+              $eq: [
+                '$_id',
+                {
+                  $toObjectId: id,
+                },
+              ],
+            },
+          },
+        },
+      ]).chain(sectionQuery(userId)).query,
+    );
+    if (res.length === 0) throw new DocumentNotFound();
+    this.logger.log(res[0]);
+    return res[0];
   }
 
   public async createCourseSection(
@@ -90,12 +114,11 @@ export class CourseService {
     userId: string,
   ) {
     // TODO: check if course with given id is available
-    return await this.CourseSectionModel.create({
+    const section = await this.CourseSectionModel.create({
       ...args,
       owner: userId,
     });
-    // TODO: resolve query
-    // const sec = await this.CourseSectionModel.aggregate()
+    return await this.getCourseSection(section._id, userId);
   }
 
   public async createLesson(args: CreateLessonArgs, userId: string) {
@@ -113,7 +136,6 @@ export class CourseService {
         },
       ]).chain(lessonQuery(userId)).query,
     );
-    this.logger.log(res[0]);
     return res[0];
   }
 }
